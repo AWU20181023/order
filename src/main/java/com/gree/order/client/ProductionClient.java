@@ -1,9 +1,11 @@
 package com.gree.order.client;
 
+import com.gree.order.entity.dto.CartDto;
 import com.gree.order.entity.dto.ProductionDtos;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -17,4 +19,7 @@ public interface ProductionClient {
 
     @PostMapping("/listForOrder")
     List<ProductionDtos> listForOrder(List<String> productIdList);
+
+    @PostMapping("decrementStock")
+    void decrementStock(List<CartDto> cartDtoList);
 }

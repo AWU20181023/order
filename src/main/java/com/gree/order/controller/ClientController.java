@@ -1,6 +1,7 @@
 package com.gree.order.controller;
 
 import com.gree.order.client.ProductionClient;
+import com.gree.order.entity.dto.CartDto;
 import com.gree.order.entity.dto.ProductionDtos;
 import com.gree.order.entity.po.Category;
 import org.hibernate.validator.constraints.EAN;
@@ -57,5 +58,15 @@ public class ClientController {
             }
         }
         return "ok";
+    }
+
+    @GetMapping("decrementStock")
+    public void decrementStock() {
+        CartDto cartDto = new CartDto();
+        cartDto.setId("1");
+        cartDto.setNum(2);
+        List<CartDto> cartDtos = new LinkedList<>();
+        cartDtos.add(cartDto);
+        productionClient.decrementStock(cartDtos);
     }
 }
