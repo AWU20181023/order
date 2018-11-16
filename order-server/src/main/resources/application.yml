@@ -1,9 +1,0 @@
-spring:
-  application:
-    name: order
-eureka:
-  client:
-    service-url:
-      defaultZone: http://172.16.227.128:8761/eureka/
-server:
-  port: 8081

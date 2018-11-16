@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: order
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: CONFIG
+      profile: dev
+#默认localhost下访问，不同ip需如下配置，否则无法找到注册地址
+eureka:
+  client:
+    service-url:
+      defaultZone: http://172.16.227.128:8761/eureka/
