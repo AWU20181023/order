@@ -4,7 +4,9 @@ import com.gree.product.client.ProductionClient;
 import com.gree.product.dto.CartDto;
 import com.gree.product.dto.ProductionOutput;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -17,6 +19,7 @@ import java.util.List;
  * Created by 260152(AWU) on 2018/10/31 8:00.
  */
 @RestController
+@RefreshScope
 public class ClientController {
     @Autowired
     private LoadBalancerClient loadBalancerClient;
@@ -24,6 +27,13 @@ public class ClientController {
     private RestTemplate restTemplate;
     @Autowired
     private ProductionClient productionClient;
+    @Value("${dev}")
+    private String dev;
+
+    @GetMapping("print")
+    public String printEnv() {
+        return dev;
+    }
 
     @GetMapping("getProductionMsg")
     public String getProductionMsg() {
@@ -44,7 +54,7 @@ public class ClientController {
     @GetMapping("getProducMsg")
     public String getProducMsg() {
         List<ProductionOutput> productionDtos = productionClient.listForOrder(Arrays.asList("1", "3"));
-        return "ok";
+        return dev;
     }
 
     @GetMapping("decrementStock")

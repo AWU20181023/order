@@ -15,11 +15,4 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    @Value("${dev}")
-    private String dev;
-
-    @GetMapping("print")
-    public String printEnv() {
-        return dev;
-    }
 }
