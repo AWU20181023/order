@@ -1,17 +1,23 @@
 package com.gree.order.controller;
 
+import com.gree.order.message.StreamClient;
 import com.gree.product.client.ProductionClient;
 import com.gree.product.dto.CartDto;
 import com.gree.product.dto.ProductionOutput;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.cloud.stream.messaging.Processor;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,6 +26,7 @@ import java.util.List;
  */
 @RestController
 @RefreshScope
+@EnableBinding(Processor.class)
 public class ClientController {
     @Autowired
     private LoadBalancerClient loadBalancerClient;
@@ -27,11 +34,17 @@ public class ClientController {
     private RestTemplate restTemplate;
     @Autowired
     private ProductionClient productionClient;
+    @Autowired
+    private AmqpTemplate amqpTemplate;
     @Value("${dev}")
     private String dev;
+    @Autowired
+    private Processor processor;
 
     @GetMapping("print")
     public String printEnv() {
+        processor.output().send(MessageBuilder.withPayload("wo shi:" + new Date()).build());
+//        amqpTemplate.convertAndSend("myQueue", new Date());
         return dev;
     }
 
